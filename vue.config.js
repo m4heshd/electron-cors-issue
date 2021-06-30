@@ -16,6 +16,11 @@ module.exports = {
             ...vRenderer.obfuscate ? [new WebpackObfuscator(vRenderer.obfuscatorConfig)] : []
         ]
     },
+    devServer: {
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        }
+    },
     pages: {
         'index': {
             entry: './src/main.js',

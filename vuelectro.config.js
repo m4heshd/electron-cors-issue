@@ -48,7 +48,7 @@ module.exports = {
             'vue-router',
             'vuex'
         ],
-        obfuscate: true, // Whether to obfuscate the renderer process or not (recommended)
+        obfuscate: false, // Whether to obfuscate the renderer process or not (recommended)
 
         // Obfuscation configuration for renderer process goes here
         // Visit https://www.npmjs.com/package/javascript-obfuscator for instructions
@@ -107,6 +107,9 @@ module.exports = {
         appId: "Vuelectro",
         directories: {
             output: "dist_electron"
+        },
+        win: {
+            target: ["dir"]
         },
         files: [
             "!src${/*}",

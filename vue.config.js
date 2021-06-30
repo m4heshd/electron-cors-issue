@@ -15,5 +15,19 @@ module.exports = {
         plugins: [
             ...vRenderer.obfuscate ? [new WebpackObfuscator(vRenderer.obfuscatorConfig)] : []
         ]
+    },
+    pages: {
+        'index': {
+            entry: './src/main.js',
+            template: 'public/index.html',
+            title: 'Index',
+            chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },
+        'child': {
+            entry: './src/windows/main.js',
+            template: 'public/index.html',
+            title: 'Child',
+            chunks: ['chunk-vendors', 'chunk-common', 'child']
+        }
     }
 };

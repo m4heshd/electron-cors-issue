@@ -8,12 +8,15 @@ process.on('uncaughtException', (error => {
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
+app.commandLine.appendSwitch('disable-site-isolation-trials');
+
 // Get and switch Vuelectro build type
 process.env.VUELECTRO_ENV = process.env.VUELECTRO_ENV || 'build';
 
 // Set global variables for the resource path and Vue static path to be used throughout the app (both in main and renderer)
 global.__resPath = path.join(process.cwd(), 'resources');
 global.__staticPath = path.join(process.cwd(), 'public');
+global.__appPath = path.join(process.cwd(), 'app');
 
 let rndURL = `file://${__dirname}/renderer/index.html`; // Renderer entry URL
 let isDev = false; // Set the Electron environment to development or production
@@ -31,21 +34,25 @@ switch (process.env.VUELECTRO_ENV) {
     case 'build':
         global.__resPath = process.resourcesPath;
         global.__staticPath = path.join(__dirname, 'renderer');
+        global.__appPath = __dirname;
         break;
 }
 
 function createWindow () {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1280,
+        height: 800,
         show: false,
         webPreferences: {
+            webSecurity: false,
+            nativeWindowOpen: true,
             nodeIntegration: true,
             contextIsolation: false,
             preload: path.join(__dirname, 'preload.js'),
             additionalArguments: [JSON.stringify({
                 VUELECTRO_RES_PATH: __resPath,
                 VUELECTRO_STATIC_PATH: __staticPath,
+                VUELECTRO_APP_PATH: __appPath,
                 VUELECTRO_ENV: process.env.VUELECTRO_ENV
             })]
         }
